@@ -3,7 +3,7 @@
   //look for a button with the text "skip ads"
   setInterval(() => {
     let b = [...document.querySelectorAll('button')]
-      .filter(x => x.textContent.toLowerCase() == 'skip ads')[0];
+      .filter(x => x.textContent.toLowerCase().indexOf('skip ad')!=-1)[0];
     let b2 = document.querySelector(".ytp-ad-overlay-close-button");
     if (b) b.click();
     // @ts-ignore
