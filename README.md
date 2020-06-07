@@ -1,7 +1,7 @@
 # youtube-skip-ads
 A bookmarklet for autoskipping ads on youtube
 
-##Description
+## Description
 There are a number of solutions for skipping ads on YouTube.
 You have browser extensions or DNS-level ad-blockers such as Pie-hole.
 
