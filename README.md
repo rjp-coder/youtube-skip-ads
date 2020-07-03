@@ -11,6 +11,6 @@ At the time of writing, it can even skip ads while the countdown is still active
 If you reload the page, or if youtube reloads the whole page, then you will have to click the bookmark again to skip ads. 
 
 ## Further Development
-Use something like Grunt to generate the bookmarklet from source code.
-Set the volume to low while an unskippable ad is playing.
-Minify the code such that it can be realistically run on a mobile phone with the use of one or two keyboard shortcuts.  
+Use something like Grunt to generate the bookmarklet from source code.\
+Set the volume to low while an unskippable ad is playing.\
+Minify the code such that it can be realistically run on a mobile phone with the use of one or two keyboard shortcuts.  \
