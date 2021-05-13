@@ -20,14 +20,15 @@
   }
   function muteIfAdRunning() {
     //also unmutes if Ad not running
-    let adElem = document.querySelector(".ytp-ad-text");
+    let adElem = [...document.querySelectorAll(".ytp-ad-text")]
+      .filter((ad => ad.textContent.length < 5))[0];
     let muteBtn = document.querySelector(".ytp-mute-button");
     let adRunning = !!adElem;
     if (adRunning) {
-      isMuted = !!~muteBtn.ariaLabel.toLowerCase().search("unmute");
+      let isMuted = !!~muteBtn.ariaLabel.toLowerCase().search("unmute");
       if (!isMuted) {
         muteBtn.click();
-        mutedBecaseAd = true;
+        mutedBecauseAd = true;
       }
     } else {
       if (mutedBecauseAd) {
@@ -47,8 +48,10 @@
   #msg_b_{
     background-color:LemonChiffon;
     color:LightCoral;
+    width:100%;
+    text-align:center;
     position:fixed;
-    font-size:24;
+    font-size:24px;
     top:2px;
     z-index:99999;
     opacity:1;
