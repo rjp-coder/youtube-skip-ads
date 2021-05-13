@@ -1,6 +1,7 @@
 //Youtube one-click ads skipper.
 (function () {
   showMessage();
+  indicateScriptRunning();
   let mutedBecauseAd = false;
   setInterval(() => {
     clickSkipButton();
@@ -36,6 +37,10 @@
         mutedBecauseAd = false;
       }
     }
+  }
+  function indicateScriptRunning() {
+    [...document.body.children]
+      .filter(a => a.tagName == "YTD-APP")[0].style.backgroundColor = "grey";
   }
   function showMessage() {
     //create banner for top of screen
