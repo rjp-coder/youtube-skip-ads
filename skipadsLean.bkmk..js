@@ -1,0 +1,1 @@
+setInterval(() => { ö = [...document.querySelectorAll("button")].filter(t => ~t.textContent.search(/[sS]kip [aA]d/))[0], ö && ö.click() }, 500);
