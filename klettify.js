@@ -15,14 +15,14 @@ if (myArgs.length > 1) {
 }
 let inputArg = myArgs[0];
 //special case: user wants help 
-if ((switches.length == 0) && (inputArg == "h" || inputArg == "help")) {
+if ((switches.length == 0) && (!inputArg || inputArg == "h" || inputArg == "help")) {
   switches = "h";
 }
 
 if (config("h")) {
   let helpText = `
   Klettify: turns javascript into bookmarklets.
-  Usage: node klettify.js [args] filename [outputFilename]
+  Usage: node klettify [args] filename [outputFilename]
 
   args:
   i:show input
@@ -31,7 +31,7 @@ if (config("h")) {
   v:verbose
   n:no IIFE (do not wrap code in an Immediately Invoked Function Expression)
   d:dry run (do not write to file)
-  f:specify output file name
+  f:specify output file name (requires outputFilename)
   q:quiet (minimal logging/information)
 
   Examples: 
@@ -53,9 +53,7 @@ if (inputArg.search(".js") == -1) {
   inputArg = inputArg + ".js";
 }
 
-if (config("v")) {
-  print("Input file is " + inputArg);
-}
+printv(YELLOW, "Input file is " + inputArg);
 
 let inputText = getInput();
 if (!inputText) {
@@ -67,7 +65,7 @@ if (config("i") || config("v")) {
   print(MAGENTA, "INPUT : \n" + inputText);
 }
 
-printv("Stripping comments");
+printv(YELLOW, "Stripping comments");
 let out = stripComments(inputText);
 printv("Removing new line characters");
 out = makeOneliner(out);
@@ -77,7 +75,7 @@ if (!config("n")) {
   printv("Wrapping code in an Immediately Invoked Function Expression (IIFE)");
   out = makeIIFE(out); //n: No IIFE
 }
-printv("Adding the javascript prefix to make it a valid bookmark");
+printv("Adding the javascript prefix to make it a valid bookmark", RESET);
 out = addNecessaryPrefix(out);
 
 if (config("o") || config("v") || config("d")) {
@@ -128,12 +126,12 @@ function sendOutput(out) {
     file = myArgs[2];
   }
   fs.writeFile(file, out, err => {
-    print(YELLOW, "creating bookmarklet file " + file, RESET)
+    print(YELLOW, "writing bookmarklet to file " + file, RESET)
     if (err) {
       console.error(RED, "Could not write to output file: " + file + "\n" + err, RESET);
       return false;
     }
-    console.info(GREEN, "\nBookmarklet creation was successful", RESET);
+    console.info(GREEN, "Bookmarklet creation was successful", RESET);
   })
 }
 
@@ -147,6 +145,6 @@ function print() {
 
 function printv() {
   if (config("v")) {
-    print(arguments);
+    print(...arguments);
   }
 }
