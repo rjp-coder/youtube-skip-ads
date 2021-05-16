@@ -14,19 +14,20 @@ if (myArgs.length > 1) {
   switches = myArgs.shift();
 }
 let inputArg = myArgs[0];
-if (inputArg.search(".js") == -1) {
-  inputArg = inputArg + ".js";
+//special case: user wants help 
+if ((switches.length == 0) && (inputArg == "h" || inputArg == "help")) {
+  switches = "h";
 }
 
 if (config("h")) {
   let helpText = `
-  "Klettify: turns javascript into bookmarklets.
+  Klettify: turns javascript into bookmarklets.
   Usage: node klettify.js [args] filename [outputFilename]
 
   args:
   i:show input
   o:show output
-  h|help:print help text and exit
+  h:help:print help text and exit
   v:verbose
   n:no IIFE (do not wrap code in an Immediately Invoked Function Expression)
   d:dry run (do not write to file)
@@ -42,11 +43,19 @@ if (config("h")) {
       node klettify.js r file.js outputFile.bkmk.js
   
   `;
-  print(helpText);
+  console.info(YELLOW, helpText, RESET);
   process.exit();
 };
 
 print(YELLOW, "Running klettify...");
+
+if (inputArg.search(".js") == -1) {
+  inputArg = inputArg + ".js";
+}
+
+if (config("v")) {
+  print("Input file is " + inputArg);
+}
 
 let inputText = getInput();
 if (!inputText) {
@@ -58,12 +67,17 @@ if (config("i") || config("v")) {
   print(MAGENTA, "INPUT : \n" + inputText);
 }
 
+printv("Stripping comments");
 let out = stripComments(inputText);
+printv("Removing new line characters");
 out = makeOneliner(out);
+printv("Reducing whitespace");
 out = minimiseSpaces(out);
 if (!config("n")) {
+  printv("Wrapping code in an Immediately Invoked Function Expression (IIFE)");
   out = makeIIFE(out); //n: No IIFE
 }
+printv("Adding the javascript prefix to make it a valid bookmark");
 out = addNecessaryPrefix(out);
 
 if (config("o") || config("v") || config("d")) {
@@ -101,7 +115,7 @@ function getInput() {
     const data = fs.readFileSync(inputArg, 'utf8')
     return data;
   } catch (err) {
-    console.error(RED, "Could not read contents of input file: " + inputArg + "\n" + err);
+    console.error(RED, "Could not read contents of input file: " + inputArg + "\n" + err, RESET);
   }
 }
 
@@ -114,6 +128,7 @@ function sendOutput(out) {
     file = myArgs[2];
   }
   fs.writeFile(file, out, err => {
+    print(YELLOW, "creating bookmarklet file " + file, RESET)
     if (err) {
       console.error(RED, "Could not write to output file: " + file + "\n" + err, RESET);
       return false;
@@ -127,5 +142,11 @@ function print() {
     return;
   } else {
     console.log(...arguments);
+  }
+}
+
+function printv() {
+  if (config("v")) {
+    print(arguments);
   }
 }
