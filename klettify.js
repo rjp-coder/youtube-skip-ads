@@ -62,11 +62,9 @@ function getInput() {
 function sendOutput(out) {
   fs.writeFile(outputArg, out, err => {
     if (err) {
-      console.error("Could not write to output file: " + outputArg + "\n" + err);
-      console.log(RESET, "");
+      console.error(RED, "Could not write to output file: " + outputArg + "\n" + err, RESET);
       return false;
     }
-    console.log(GREEN, "\nBookmarklet creation was successful");
-    console.log(RESET);
+    console.log(GREEN, "\nBookmarklet creation was successful", RESET);
   })
 }
