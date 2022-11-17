@@ -26,7 +26,7 @@
     let muteBtn = document.querySelector(".ytp-mute-button");
     let adRunning = !!adElem;
     if (adRunning) {
-      let isMuted = !!~muteBtn.ariaLabel.toLowerCase().search("unmute");
+      let isMuted = !!~muteBtn.title.toLowerCase().search("unmute");
       if (!isMuted) {
         muteBtn.click();
         mutedBecauseAd = true;
